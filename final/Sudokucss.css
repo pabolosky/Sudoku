@@ -19,9 +19,11 @@ input{
     margin-top: 50px;
 }
 #parraf{
-    margin-left: 860px;
+   margin-left: 860px;
     display: flex;
     gap: 20px;
+    
+
 }
 button{
     width: 80px;

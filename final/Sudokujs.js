@@ -19,11 +19,11 @@ p.id = "parraf"
 document.body.appendChild(p)
 
 let b1 = document.createElement("button")
-b1.innerHTML = "Resetear"
+b1.innerHTML = "Reset"
 p.appendChild(b1)
 
 let b2 = document.createElement("button")
-b2.innerHTML = "Validar"
+b2.innerHTML = "Volver"
 p.appendChild(b2)
 
 
@@ -82,30 +82,40 @@ function limpiarNums() {
         for (let j = 0; j < 9; j++) {
             matriz[i][j].value = ""
             matriz[i][j].style.background = "white"
+            matriz[i][j].readOnly = false
         }
     }
 }
 
+// crear la función que rellena el Sudoku 
 
-// función para que solo puedas poner números del 0 al 9
+function generearNums() {
 
-let todosInputs = document.getElementsByTagName("input")
+    let numeros = [
+        [7, "", "", "", "", "", "", 8, ""],
+        ["", 8, "", 9, 2, "", 5, "", ""],
+        ["", "", 3, 5, "", "", "", "", ""],
+        ["", 7, "", "", "", "", 4, "", ""],
+        ["", "", 1, "", 9, 6, "", "", ""],
+        [5, "", "", 4, "", 7, 3, "", ""],
+        ["", "", "", "", "", "", "", 5, ""],
+        ["", 3, 2, "", 1, "", 7, 6, 4],
+        ["", "", "", "", "", 3, 1, "",""]
+    ]
 
-for (let i = 0; i < todosInputs.length; i++) {
-
-    todosInputs[i].addEventListener('input', function (x) {
-
-        if (isNaN(x.target.value) || x.target.value < 1) {
-            x.target.value = ""
-
-        } else if (x.target.value > 10) {
-            let abc = x.target.value.toString()
-            x.target.value = abc.charAt(0)
+    for (let i = 0; i < 9; i++) {
+        for (let j = 0; j < 9; j++) {
+            matriz[i][j].value = numeros[i][j]
+            if(matriz[i][j].value != ""){
+            matriz[i][j].style.background = "#A6A6A6"
+            matriz[i][j].readOnly = true
+            }
         }
-    })
+    }
+
 }
 
-
+generearNums()
 
 // función para comprobar
 
@@ -160,43 +170,33 @@ function validarNums() {
     }
 }
 
-b2.addEventListener("click", function () {
+// añadir el listener a los inputs
 
-    validarNums()
+let todosInputs = document.getElementsByTagName("input")
 
-    if (!valido) {
-        alert("Todavía tienes algo mal")
-    } else {
-        alert("Enhorabuena, has completado el Sudoku :)")
-    }
-})
+for (let i = 0; i < todosInputs.length; i++) {
 
+    todosInputs[i].addEventListener("input", function (x) {
 
-// crear la función que rellena el Sudoku 
+        if (isNaN(x.target.value) || x.target.value < 1) {
+            x.target.value = ""
 
-function generearNums() {
-    let numeros = [
-        7, 8, 8, 9, 2, 5, 3, 5, 7,
-        4, 1, 9, 6, 5, 4, 7, 3, 5,
-        3, 2, 1, 7, 6, 4, 3, 1
-    ]
+        } else if (x.target.value > 10) {
+            let abc = x.target.value.toString()
+            x.target.value = abc.charAt(0)
+        }
+        validarNums()
+        if(valido){
+            alert("Enhorabuena, has completado el Sudoku :)")
+            for (let i = 0; i < 9; i++) {
+                for (let j = 0; j < 9; j++) {
+                    matriz[i][j].readOnly = true
 
-    let x = []
-    x.push(
-        matriz[0][0], matriz[0][7], matriz[1][1], matriz[1][3], matriz[1][4], matriz[1][6], matriz[2][2], matriz[2][3], matriz[3][1], matriz[3][6], matriz[4][2], matriz[4][4],
-        matriz[4][5], matriz[5][0], matriz[5][3], matriz[5][5], matriz[5][6], matriz[6][7], matriz[7][1], matriz[7][2], matriz[7][4], matriz[7][6], matriz[7][7], matriz[7][8], 
-        matriz[8][5], matriz[8][6]
-    )
-
-    for (let i = 0; i < numeros.length; i++) {
-        x[i].value = numeros[i]
-        x[i].style.background = "#A6A6A6"
-        x[i].readOnly = true
-    }
-
+                }
+            }
+        }
+    })
 }
-
-generearNums()
 
 // añadir el listener al botón que resetea Sudoku
 
